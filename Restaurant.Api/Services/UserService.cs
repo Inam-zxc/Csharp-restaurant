@@ -26,6 +26,13 @@ namespace Restaurant.Api.Services
             await usersCollection.InsertOneAsync(user);
         }
 
+        public async Task<User> GetUserByUsernameAsync(string username)
+        {
+            var filter = filterBuilder.Eq(user => user.Username, username);
+            return await usersCollection.Find(filter).SingleOrDefaultAsync();
+        }
+
+
         // public async Task DeleteItemAsync(Guid id)
         // {
         //     var filter = filterBuilder.Eq(item => item.Id, id);
