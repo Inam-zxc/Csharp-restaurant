@@ -59,7 +59,10 @@ namespace Restaurant.Api
             });
             services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<IFoodService, FoodService>();
-            services.AddControllers();
+            services.AddControllers(options =>
+            {
+                options.SuppressAsyncSuffixInActionNames = false;
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Restaurant.Api", Version = "v1" });

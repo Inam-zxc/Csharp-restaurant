@@ -17,5 +17,10 @@ namespace Restaurant.Api
 
             };
         }
+
+        public static FoodDto AsFoodDto(this Food food)
+        {
+            return new FoodDto(food.Id, food.Name, food.Price, food.CreatedDate, food.Reviews);
+        }
     }
 }

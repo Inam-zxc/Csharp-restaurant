@@ -6,6 +6,8 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using Restaurant.Api.Settings;
 using Restaurant.Api.Services.Interface;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Restaurant.Api.Services
 {
@@ -26,17 +28,18 @@ namespace Restaurant.Api.Services
             await foodsCollection.InsertOneAsync(food);
         }
 
-        public async Task<Food> GetAllFoodsAsync(string name = null)
+        public async Task<IEnumerable<Food>> GetAllFoodsAsync(string name = null)
         {
+            var filter = filterBuilder.Or(new BsonDocument());
             var filterConditions = new List<FilterDefinition<Food>>();
             if (!string.IsNullOrWhiteSpace(name))
             {
-                var namefilter = filterBuilder.Where(food => food.Name.Contains(name, StringComparison.OrdinalIgnoreCase));
+                var namefilter = filterBuilder.Regex("Name", new BsonRegularExpression(new Regex(name, RegexOptions.IgnoreCase)));
                 filterConditions.Add(namefilter);
+                filter = filterBuilder.Or(filterConditions);
             }
 
-            var filter = filterBuilder.Or(filterConditions);
-            return await foodsCollection.Find(filter).SingleOrDefaultAsync();
+            return await foodsCollection.Find(filter).ToListAsync();
         }
 
 
@@ -47,7 +50,7 @@ namespace Restaurant.Api.Services
 
         }
 
-        public async Task<Food> GetItemByIdAsync(Guid id)
+        public async Task<Food> GetFoodByIdAsync(Guid id)
         {
             var filter = filterBuilder.Eq(food => food.Id, id);
             return await foodsCollection.Find(filter).SingleOrDefaultAsync();
