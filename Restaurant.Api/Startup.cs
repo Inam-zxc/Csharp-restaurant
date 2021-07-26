@@ -58,6 +58,7 @@ namespace Restaurant.Api
                 return new MongoClient(mongoDbSettings.ConnectionString);
             });
             services.AddSingleton<IUserService, UserService>();
+            services.AddSingleton<IFoodService, FoodService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
