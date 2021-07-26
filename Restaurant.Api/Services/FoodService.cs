@@ -62,5 +62,16 @@ namespace Restaurant.Api.Services
             var filter = filterBuilder.Eq(existingFood => existingFood.Id, food.Id);
             await foodsCollection.ReplaceOneAsync(filter, food);
         }
+
+        // Not use
+        public async Task<UpdateResult> UpdateFoodReviewAsync(Guid foodId, Review review)
+        {
+            FilterDefinitionBuilder<Review> reviewFilterBuilder = Builders<Review>.Filter;
+            var reviewFilter = reviewFilterBuilder.Eq(review => review.Id, review.Id);
+            var filter = filterBuilder.ElemMatch(food => food.Reviews, reviewFilter);
+            // var reviewFilter = filterBuilder.ElemMatch(food => food.Reviews)
+            var arrayUpdate = Builders<Food>.Update.Set("Reviews", review);
+            return await foodsCollection.UpdateOneAsync(filter, arrayUpdate);
+        }
     }
 }

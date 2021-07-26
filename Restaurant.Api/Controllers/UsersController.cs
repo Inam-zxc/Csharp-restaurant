@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using Restaurant.Api.Settings;
 using System.Security.Claims;
+using Restaurant.Api.Constants;
 
 namespace Restaurant.Api.Controllers
 {
@@ -88,9 +89,9 @@ namespace Restaurant.Api.Controllers
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new[] {
-                new Claim("Id", user.Id.ToString()),
-                new Claim("Username", user.Username),
-                new Claim("Role", user.Role)
+                new Claim(CustomClaimsType.UserId, user.Id.ToString()),
+                new Claim(CustomClaimsType.Username, user.Username),
+                new Claim(CustomClaimsType.Roles, user.Role)
             };
 
             var token = new JwtSecurityToken(

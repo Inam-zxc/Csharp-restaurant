@@ -14,6 +14,7 @@ using Restaurant.Api.Services.Interface;
 using Restaurant.Api.Constants;
 using Microsoft.Extensions.Configuration;
 using Restaurant.Api.Settings;
+using Restaurant.Api;
 
 namespace Restaurant.UnitTests
 {
@@ -30,6 +31,7 @@ namespace Restaurant.UnitTests
         {
             // Arrange
             var expectedFoods = new[] { CreateRandomFood(), CreateRandomFood(), CreateRandomFood() };
+            var expectedOutputFoods = new[] { expectedFoods[0].AsFoodDto(), expectedFoods[1].AsFoodDto(), expectedFoods[2].AsFoodDto() };
             foodServiceStub.Setup(u => u.GetAllFoodsAsync(It.IsAny<string>()))
                 .ReturnsAsync(expectedFoods);
 
@@ -39,7 +41,7 @@ namespace Restaurant.UnitTests
             var result = await controller.GetAllFoodAsync(string.Empty);
 
             // Assert
-            result.Should().BeEquivalentTo(expectedFoods);
+            result.Should().BeEquivalentTo(expectedOutputFoods);
         }
 
         [Fact]

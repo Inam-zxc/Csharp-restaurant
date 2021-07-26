@@ -15,6 +15,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Restaurant.Api.Settings;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Restaurant.Api.Constants;
 
 namespace Restaurant.Api.Controllers
 {
@@ -46,7 +47,7 @@ namespace Restaurant.Api.Controllers
         // @desc    get food by id
         // @route   GET /foods/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<FoodDto>> GetFoodByIdAsync(Guid id)
+        public async Task<ActionResult<FoodWithReviewsDto>> GetFoodByIdAsync(Guid id)
         {
             var food = await foodService.GetFoodByIdAsync(id);
 
@@ -55,15 +56,17 @@ namespace Restaurant.Api.Controllers
                 return NotFound();
             }
 
-            return food.AsFoodDto();
+            return food.AsFoodWithReviewsDto();
         }
 
         // @desc    create food
         // @route   POST /foods
         [HttpPost]
         [Authorize]
+        [ClaimRequirement(CustomClaimsType.Roles, Constants.Constants.Roles.User)]
         public async Task<ActionResult<FoodDto>> CreateFoodAsync(CreateFoodDto foodDto)
         {
+
             Food food = new()
             {
                 Id = Guid.NewGuid(),

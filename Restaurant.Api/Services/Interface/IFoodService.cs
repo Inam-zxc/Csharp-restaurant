@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MongoDB.Driver;
 using Restaurant.Api.Models;
 
 namespace Restaurant.Api.Services.Interface
@@ -12,5 +13,6 @@ namespace Restaurant.Api.Services.Interface
         Task DeleteFoodAsync(Guid id);
         Task<Food> GetFoodByIdAsync(Guid id);
         Task UpdatedFoodAsync(Food food);
+        Task<UpdateResult> UpdateFoodReviewAsync(Guid foodId, Review review);
     }
 }
