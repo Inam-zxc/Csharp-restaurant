@@ -40,7 +40,7 @@ namespace Restaurant.Api.Controllers
         [HttpPost("food/{id}")]
         [Authorize]
         [ClaimRequirement(CustomClaimsType.Roles, Constants.Constants.Roles.User)]
-        public async Task<ActionResult<Review>> CreateReviewAsync(Guid id, CreateReviewDto reviewDto)
+        public async Task<ActionResult<FoodWithReviewsDto>> CreateReviewAsync(Guid id, CreateReviewDto reviewDto)
         {
 
             var existingFood = await foodService.GetFoodByIdAsync(id);
@@ -87,7 +87,7 @@ namespace Restaurant.Api.Controllers
         [HttpPut("food/{id}")]
         [Authorize]
         [ClaimRequirement(CustomClaimsType.Roles, Constants.Constants.Roles.User)]
-        public async Task<ActionResult<Review>> UpdateReviewAsync(Guid id, UpdateReviewDto reviewDto)
+        public async Task<ActionResult<FoodWithReviewsDto>> UpdateReviewAsync(Guid id, UpdateReviewDto reviewDto)
         {
 
             var existingFood = await foodService.GetFoodByIdAsync(id);
@@ -135,7 +135,7 @@ namespace Restaurant.Api.Controllers
         [HttpDelete("food/{id}")]
         [Authorize]
         [ClaimRequirement(CustomClaimsType.Roles, Constants.Constants.Roles.User)]
-        public async Task<ActionResult<Review>> DeleteReviewAsync(Guid id)
+        public async Task<ActionResult<FoodWithReviewsDto>> DeleteReviewAsync(Guid id)
         {
 
             var existingFood = await foodService.GetFoodByIdAsync(id);
